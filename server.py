@@ -1,6 +1,5 @@
-import secrets
-import string
 from flask import Flask, request
+from utils import Game
 
 app = Flask(__name__)
 
@@ -10,24 +9,6 @@ games = {
     # ...
 }
 
-def make_uid(length = 6):
-    characters = string.ascii_letters + string.digits
-    chars = [secrets.choice(characters) for _ in range(length)]
-    random_string = ''.join(chars)
-    return random_string
-
-class Game:
-    def __init__(self, word):
-        self.uid = make_uid()
-        self.word = word
-        self.guesses = []
-    def construct(self):
-        displayed_word = ''
-        for letter in self.word:
-            if letter in self.guesses: displayed_word += letter
-            else: displayed_word += '_'
-        return displayed_word
-    
 @app.route('/start_game/<word>')
 def start_game(word):
     global games
@@ -53,6 +34,7 @@ def make_move(uid):
     game = games.get(uid)
     if not game: return 'No game found'
     game.guesses = guesses
+    if len(guesses) == 7: return game.word
     return game.construct()
 
 app.run(debug=True, host='127.0.0.1', port=5000)
