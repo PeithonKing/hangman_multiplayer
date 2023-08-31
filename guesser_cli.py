@@ -11,7 +11,8 @@ while True:
     if length.isnumeric():
         length = int(length)
         break
-    else:print("Invalid ID. Try again.")
+    else:
+        print("Invalid ID. Try again.")
 
 # make_move/<id>' (POST) sent every time a new character is guessed
 # - send your ID
@@ -27,14 +28,19 @@ while True:
         print("You already guessed this letter. Try again.")
         continue
     guesses.append(guess)
-    response = requests.post(f"http://{IP}:{PORT}/make_move/{ID}", json={"guesses": guesses}).text
+    response = requests.post(f"http://{IP}:{PORT}/make_move/{ID}", json={"guesses": guesses}).text  # noqa: E501
     print(" ".join(list(response)))
-    if len(guesses) == 7: break
+    if len(guesses) == 7:
+        break
 
 word = ''
 for letter in response:
-    if letter in guesses: word += letter
-    else: word += '_'
+    if letter in guesses:
+        word += letter
+    else:
+        word += '_'
 
-if word == response: print("You won!")
-else: print("You lost!")
+if word == response:
+    print("You won!")
+else:
+    print("You lost!")

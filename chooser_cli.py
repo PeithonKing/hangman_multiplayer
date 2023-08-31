@@ -7,8 +7,10 @@ PORT = 5000
 
 while True:
     word = input("Enter the word: ").lower()
-    if check_word(word): break
-    else: print("Invalid word. Try again.")
+    if check_word(word):
+        break
+    else:
+        print("Invalid word. Try again.")
 
 # send a get request to 'start_game/<word>' endpoint
 ID = requests.get(f"http://{IP}:{PORT}/start_game/{word}").text
@@ -24,7 +26,7 @@ game = Game(word, ID)
 while True:
     guess = requests.get(f"http://{IP}:{PORT}/stats/{ID}").json()
     if game.guesses != guess:
-        print(f"Guesser guessed new letters: {', '.join(guess[len(game.guesses):])}")
+        print(f"Guesser guessed new letters: {', '.join(guess[len(game.guesses):])}")  # noqa: E501
         game.guesses = guess
         print(f"Current state of the word: {game.construct()}")
         print(f"{7 - len(game.guesses)} guesses left")
@@ -32,5 +34,7 @@ while True:
             break
     time.sleep(5)
 
-if "_" not in game.construct(): print("Guesser won!")
-else: print("Guesser lost!")
+if "_" not in game.construct():
+    print("Guesser won!")
+else:
+    print("Guesser lost!")
