@@ -99,15 +99,14 @@ while running or chooser_running or guesser_running:
                     print("Choose a word button clicked")  # PLACEHOLDER
                     running = False
                     chooser_running = True
-                    
 
                 if guess_button.is_clicked():
                     print("Guess a word button clicked")  # PLACEHOLDER
                     running = False
                     chooser_running = True
+
     elif chooser_running:
         hangman_chooser.chooser(screen)
-
 
     clock.tick(FPS)
     pygame.display.update()
