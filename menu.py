@@ -3,6 +3,7 @@ import pygame.gfxdraw
 import random
 import os
 
+import hangman_chooser  # noqa
 
 pygame.init()
 
@@ -78,24 +79,34 @@ guess_button = Button(250, 400, 300, 50,
                       (200, 200, 0), (0, 128, 0), "Guess a word")
 
 running = True
-while running:
+chooser_running = False
+guesser_running = False
+while running or chooser_running or guesser_running:
     screen.fill(WHITE)
-    screen.blit(bg, (0, 0))
+    if running:
+        screen.blit(bg, (0, 0))
 
-    draw_title(screen)
-    choose_button.draw()
-    guess_button.draw()
+        draw_title(screen)
+        choose_button.draw()
+        guess_button.draw()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if choose_button.is_clicked():
-                print("Choose a word button clicked")  # PLACEHOLDER
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if choose_button.is_clicked():
+                    print("Choose a word button clicked")  # PLACEHOLDER
+                    running = False
+                    chooser_running = True
 
-            if guess_button.is_clicked():
-                print("Guess a word button clicked")  # PLACEHOLDER
+                if guess_button.is_clicked():
+                    print("Guess a word button clicked")  # PLACEHOLDER
+                    running = False
+                    chooser_running = True
+
+    elif chooser_running:
+        hangman_chooser.chooser(screen)
 
     clock.tick(FPS)
     pygame.display.update()
